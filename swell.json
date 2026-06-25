@@ -1,0 +1,8 @@
+{
+  "description": "Omnisend email and SMS marketing integration",
+  "id": "omnisend",
+  "name": "Omnisend",
+  "type": "integration",
+  "version": "1.0.0",
+  "permissions": []
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json.swell.store/setting.json",
+  "label": "Omnisend",
+  "description": "Sync customers, products, orders, and carts with Omnisend for email and SMS marketing automation",
+  "fields": [
+    {
+      "id": "api_key",
+      "label": "API Key",
+      "type": "text",
+      "description": "Found in Omnisend → Profile → Integrations & API → API Keys",
+      "required": true
+    },
+    {
+      "id": "store_url",
+      "label": "Store URL",
+      "type": "text",
+      "description": "Your storefront URL (e.g. https://mystore.com) — used to build product and cart links sent to Omnisend",
+      "required": true
+    },
+    {
+      "id": "enabled",
+      "label": "Enable Integration",
+      "type": "toggle",
+      "description": "Activate real-time syncing of customers, products, orders, and carts to Omnisend",
+      "default": false
+    },
+    {
+      "id": "use_display_locale",
+      "label": "Use Display Locale",
+      "type": "toggle",
+      "description": "Fetch orders and carts in their display locale before syncing to Omnisend",
+      "default": false
+    }
+  ]
+}
