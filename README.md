@@ -37,7 +37,7 @@ swell app install
 In the "Apps" tab, select this app, and in the "Settings" tab, add Omnisend API Key and store url (use https:// as the beginning of the URL).
 Make sure you've disabled the Omnisend integration, otherwise all events will be sent twice.
 
-After initially installing the app, you can synchronize your existing store with the Omnisend . Otherwise, events related to existing objects will be rejected by Omnisend.
+After initially installing the app, you can synchronize your existing store with the Omnisend. Otherwise, events related to existing objects will be rejected by Omnisend.
 Use this command in the live environment to activate the corresponding function:
 ```bash
 swell api post /functions/omnisend/sync --live
