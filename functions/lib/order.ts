@@ -1,5 +1,5 @@
 import currency from 'currency.js';
-import { OmnisendClient, OmnisendSettings } from './omnisend-client';
+import { OmnisendClient, type OmnisendSettings, type SwellClient } from './omnisend-client';
 import { getLocalizedRecord, getLocalizedResults, getDefaultLocale } from './localization';
 
 function fulfillmentStatus(order: any): string | undefined {
@@ -106,8 +106,22 @@ function buildOrderBody(order: any, storeUrl: string): object {
   };
 }
 
+// Relations every order query expands
+export const ORDER_EXPAND = ['items.product', 'account'];
+
+// Order for an Omnisend batch, used by full and page-by-page sync
+export function buildOrderBatchItem(order: any, storeUrl: string): object {
+  return {
+    orderID: order.id,
+    ...buildOrderBody(order, storeUrl),
+    canceledDate: order.canceled
+      ? order.date_canceled || new Date().toISOString()
+      : null,
+  };
+}
+
 export async function createOrder(
-  swell: SwellRequest['swell'],
+  swell: SwellClient,
   client: OmnisendClient,
   settings: OmnisendSettings,
   orderId: string,
@@ -128,7 +142,7 @@ export async function createOrder(
 }
 
 export async function updateOrder(
-  swell: SwellRequest['swell'],
+  swell: SwellClient,
   client: OmnisendClient,
   settings: OmnisendSettings,
   orderId: string,
@@ -162,12 +176,12 @@ export async function updateOrder(
 }
 
 export async function syncOrders(
-  swell: SwellRequest['swell'],
+  swell: SwellClient,
   client: OmnisendClient,
   settings: OmnisendSettings,
 ): Promise<void> {
   const defaultLocale = settings.use_display_locale ? await getDefaultLocale(swell) : undefined;
-  const ordersQuery = { limit: 1000, expand: ['items.product', 'account'] };
+  const ordersQuery = { limit: 1000, expand: ORDER_EXPAND };
   let page = 0;
 
   do {
@@ -190,13 +204,7 @@ export async function syncOrders(
       result.results,
     );
 
-    const items = localized.map((order: any) => ({
-      orderID: order.id,
-      ...buildOrderBody(order, settings.store_url!),
-      canceledDate: order.canceled
-        ? order.date_canceled || new Date().toISOString()
-        : null,
-    }));
+    const items = localized.map((order: any) => buildOrderBatchItem(order, settings.store_url!));
 
     try {
       await client.post('/batches', { method: 'POST', endpoint: 'orders', items });

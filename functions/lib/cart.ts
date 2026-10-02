@@ -1,5 +1,5 @@
 import currency from 'currency.js';
-import { OmnisendClient, OmnisendSettings } from './omnisend-client';
+import { OmnisendClient, type OmnisendSettings, type SwellClient } from './omnisend-client';
 import { getLocalizedRecord } from './localization';
 
 function buildCartBody(cart: any, storeUrl: string): object {
@@ -25,7 +25,7 @@ function buildCartBody(cart: any, storeUrl: string): object {
 }
 
 export async function cartCreate(
-  swell: SwellRequest['swell'],
+  swell: SwellClient,
   client: OmnisendClient,
   settings: OmnisendSettings,
   cartId: string,
@@ -72,7 +72,7 @@ export async function cartDelete(
 }
 
 export async function cartUpdate(
-  swell: SwellRequest['swell'],
+  swell: SwellClient,
   client: OmnisendClient,
   settings: OmnisendSettings,
   cartId: string,

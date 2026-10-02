@@ -1,4 +1,4 @@
-import { OmnisendClient, OmnisendSettings } from './omnisend-client';
+import { OmnisendClient, type SwellClient } from './omnisend-client';
 
 function buildContactBody(account: any, isCreate = false): object {
   const address =
@@ -42,8 +42,17 @@ function buildIdentifiers(account: any): Array<object> {
   ]
 };
 
+// Contact for an Omnisend batch, used by full and page-by-page sync
+export function buildContactBatchItem(account: any): object {
+  return {
+    id: account.id,
+    ...buildContactBody(account),
+    identifiers: buildIdentifiers(account),
+  };
+}
+
 export async function createContact(
-  swell: SwellRequest['swell'],
+  swell: SwellClient,
   client: OmnisendClient,
   accountId: string,
   accountData: any,
@@ -74,7 +83,7 @@ export async function createContact(
 }
 
 export async function updateContact(
-  swell: SwellRequest['swell'],
+  swell: SwellClient,
   client: OmnisendClient,
   accountId: string,
 ): Promise<void> {
@@ -102,7 +111,7 @@ export async function updateContact(
 }
 
 export async function syncContacts(
-  swell: SwellRequest['swell'],
+  swell: SwellClient,
   client: OmnisendClient,
 ): Promise<void> {
   let page = 0;
@@ -118,11 +127,7 @@ export async function syncContacts(
       return;
     }
 
-    const items = result.results.map((account: any) => ({
-      id: account.id,
-      ...buildContactBody(account),
-      identifiers: buildIdentifiers(account),
-    }));
+    const items = result.results.map(buildContactBatchItem);
 
     try {
       await client.post('/batches', { method: 'POST', endpoint: 'contacts', items });

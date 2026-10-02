@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json.swell.store/content.json",
+  "collection": "syncs",
+  "description": "Sidebar entry that opens the app frontend to sync existing data to Omnisend",
+  "fields": [],
+  "label": "Omnisend sync",
+  "views": [
+    {
+      "id": "list",
+      "nav": {
+        "label": "Omnisend sync",
+        "link": "frontend:///"
+      },
+      "fields": [],
+      "tabs": []
+    }
+  ]
+}

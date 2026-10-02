@@ -7,6 +7,24 @@ export interface OmnisendSettings {
   use_display_locale?: boolean;
 }
 
+// The subset of the Swell client this lib needs. Satisfied by the function's req.swell
+// and by the app frontend Worker's Backend API client.
+export interface SwellClient {
+  get(url: string, query?: any): Promise<any>;
+  put(url: string, data?: any): Promise<any>;
+  post(url: string, data?: any): Promise<any>;
+  settings(id?: string): Promise<any>;
+}
+
+// Omnisend API failure with its HTTP status
+export class OmnisendError extends Error {
+  status: number;
+  constructor(message: string, status: number) {
+    super(message);
+    this.status = status;
+  }
+}
+
 export class OmnisendClient {
   private apiKey: string;
 
@@ -31,7 +49,7 @@ export class OmnisendClient {
 
     if (!res.ok) {
       const text = await res.text().catch(() => '');
-      throw new Error(`Omnisend ${method} ${path} failed ${res.status}: ${text}`);
+      throw new OmnisendError(`Omnisend ${method} ${path} failed ${res.status}: ${text}`, res.status);
     }
 
     if (res.status === 204 || res.headers.get('content-length') === '0') {

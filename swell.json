@@ -1,38 +1,41 @@
 {
-  "description": "Omnisend email and SMS marketing integration",
-  "id": "omnisend",
-  "name": "Omnisend",
-  "type": "integration",
-  "version": "1.0.0",
-  "permissions": [],
-  "support_email": "support@swell.is",
-  "integrations": [
-    "omnisend"
-  ],
-  "images": [
-    {
-      "id": "1-settings",
-      "title": "Settings",
-      "description": "Sync customers, products, orders, and carts with Omnisend for email and SMS marketing automation",
-      "image_src": "assets/screenshots/1-settings.png"
-    },
-    {
-      "id": "2-configurations",
-      "title": "App configurations",
-      "description": "Sync customer accounts, products, carts and orders to Omnisend, with a full initial sync",
-      "image_src": "assets/screenshots/2-configurations.png"
-    },
-    {
-      "id": "3-realtime-sync",
-      "title": "Real-time sync",
-      "description": "Customer, cart, order and product changes are sent to Omnisend as they happen",
-      "image_src": "assets/screenshots/3-realtime-sync.png"
-    },
-    {
-      "id": "4-initial-sync",
-      "title": "Initial sync",
-      "description": "Send existing contacts, products and orders to Omnisend in batches",
-      "image_src": "assets/screenshots/4-initial-sync.png"
-    }
-  ]
+	"description": "Omnisend email and SMS marketing integration",
+	"id": "omnisend",
+	"name": "Omnisend",
+	"type": "integration",
+	"version": "1.0.0",
+	"permissions": [],
+	"support_email": "support@swell.is",
+	"integrations": [
+		"omnisend"
+	],
+	"images": [
+		{
+			"id": "1-settings",
+			"title": "Settings",
+			"description": "Sync customers, products, orders, and carts with Omnisend for email and SMS marketing automation",
+			"image_src": "assets/screenshots/1-settings.png"
+		},
+		{
+			"id": "2-configurations",
+			"title": "App configurations",
+			"description": "Sync customer accounts, products, carts and orders to Omnisend, with a full initial sync",
+			"image_src": "assets/screenshots/2-configurations.png"
+		},
+		{
+			"id": "3-realtime-sync",
+			"title": "Real-time sync",
+			"description": "Customer, cart, order and product changes are sent to Omnisend as they happen",
+			"image_src": "assets/screenshots/3-realtime-sync.png"
+		},
+		{
+			"id": "4-initial-sync",
+			"title": "Initial sync",
+			"description": "Send existing contacts, products and orders to Omnisend in batches",
+			"image_src": "assets/screenshots/4-initial-sync.png"
+		}
+	],
+	"frontend": {
+		"hosting": "managed"
+	}
 }

@@ -1,5 +1,5 @@
 import currency from 'currency.js';
-import { OmnisendClient, OmnisendSettings } from './omnisend-client';
+import { OmnisendClient, type OmnisendSettings, type SwellClient } from './omnisend-client';
 
 function mapProductStatus(status: string | null): string | null {
   switch (status) {
@@ -86,7 +86,18 @@ function getCalculatedVariantPrice(product: any, variant: any) {
   return 0;
 }
 
-function buildProductBody(product: any, storeUrl: string): object {
+// Includes all variants of each product in /products queries
+export const VARIANTS_INCLUDE = {
+  variants: {
+    url: '/products:variants',
+    params: {
+      parent_id: 'id',
+      limit: 1000,
+    },
+  },
+};
+
+export function buildProductBody(product: any, storeUrl: string): object {
   const variants: any[] = product.variants?.results ?? [];
 
   return {
@@ -127,23 +138,15 @@ function buildProductBody(product: any, storeUrl: string): object {
   };
 }
 
-async function fetchProduct(swell: SwellRequest['swell'], productId: string): Promise<any> {
+async function fetchProduct(swell: SwellClient, productId: string): Promise<any> {
   return swell.get('/products/{id}', {
     id: productId,
-    include: {
-      variants: {
-        url: '/products:variants',
-        params: {
-          parent_id: 'id',
-          limit: 1000,
-        },
-      },
-    },
+    include: VARIANTS_INCLUDE,
   } as any);
 }
 
 export async function createProduct(
-  swell: SwellRequest['swell'],
+  swell: SwellClient,
   client: OmnisendClient,
   settings: OmnisendSettings,
   productId: string,
@@ -161,7 +164,7 @@ export async function createProduct(
 }
 
 export async function updateProduct(
-  swell: SwellRequest['swell'],
+  swell: SwellClient,
   client: OmnisendClient,
   settings: OmnisendSettings,
   itemId: string,
@@ -199,7 +202,7 @@ export async function deleteProduct(
 }
 
 export async function syncProducts(
-  swell: SwellRequest['swell'],
+  swell: SwellClient,
   client: OmnisendClient,
   settings: OmnisendSettings,
 ): Promise<void> {
@@ -209,15 +212,7 @@ export async function syncProducts(
     const result = await swell.get('/products', {
       limit: 1000,
       page: page + 1,
-      include: {
-        variants: {
-          url: '/products:variants',
-          params: {
-            parent_id: 'id',
-            limit: 1000,
-          },
-        },
-      },
+      include: VARIANTS_INCLUDE,
     } as any) as any;
 
     if (!result?.results?.length) {

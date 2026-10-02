@@ -55,11 +55,31 @@ Products without variants are sent with a single variant.
 
 Product and item URLs are built as `<Store URL>/<sku or slug>`.
 
-### Full initial sync
+### Initial sync page
 
-`POST /functions/omnisend/sync` (`functions/sync.ts`) sends all existing contacts, then products, then orders using
-Omnisend batches, waiting for each batch type to finish before starting the next. Run it once after installing,
-otherwise Omnisend rejects events for records it does not know yet.
+The **Omnisend sync** item in the dashboard sidebar opens the app frontend (`frontend/`), where the merchant sends
+existing data to Omnisend. Run it once after installing, otherwise Omnisend rejects events for records it does not
+know yet.
+
+- **Shared options** for every sync: all records, or only records created on or after a date; and the page size
+  (10, 100, 200, 500 or 1000 records).
+- **One row per entity** – Contacts, Products and Orders – each with its own **Sync**, **Stop** and
+  **Resume from page N** buttons, a progress bar, the number of records sent, and error details if a page fails.
+  Sync contacts and products before orders.
+- The page calls the app Worker one page at a time (`POST /app-api/admin/sync`). Each call reads one page from Swell
+  (sorted by creation date so pages stay stable) and sends it to Omnisend as one batch, so no request runs long.
+  Contacts pages also store `omnisend_email` on the accounts in a single Swell batch request.
+- The Worker only accepts same-origin JSON requests from a validated staff session of the store.
+
+### Sync route
+
+`POST /functions/omnisend/sync` (`functions/sync.ts`):
+
+- With `entity` (`contacts`, `products` or `orders`) it syncs one page, like the sync page:
+  `{ "entity": "contacts", "page": 1, "limit": 100, "created_after": "2026-09-01" }` returns
+  `{ entity, page, limit, count, synced, done }`.
+- Without `entity` it runs the full sync in one request: all contacts, then products, then orders, waiting for each
+  batch type to finish before starting the next.
 
 ### API key validation
 
@@ -102,11 +122,12 @@ Configured in the app settings (`settings/omnisend.json`). Credentials are never
 3. In the Swell dashboard open **Apps → Omnisend → Settings**, enter the API key and store URL, and turn on
    **Enable Integration**.
 4. **Disable the native Omnisend integration** in Swell, otherwise every event is sent twice.
-5. Sync existing data to Omnisend:
+5. Sync existing data to Omnisend: open **Omnisend sync** in the dashboard sidebar and sync contacts, products, then
+   orders. From the CLI, sync one page at a time:
 
    ```bash
-   swell api post /functions/omnisend/sync          # test environment
-   swell api post /functions/omnisend/sync --live   # live environment
+   swell api post /functions/omnisend/sync --body '{"entity":"contacts","page":1}'          # test environment
+   swell api post /functions/omnisend/sync --body '{"entity":"contacts","page":1}' --live   # live environment
    ```
 
 6. To install in the live environment, create a version and install it:
@@ -119,9 +140,13 @@ Configured in the app settings (`settings/omnisend.json`). Credentials are never
 ## Limits and known behavior
 
 - **Duplicate events** if the native Swell Omnisend integration is enabled at the same time.
-- **Initial sync runs in one request** – it pages through all accounts (100 per page), products and orders
-  (1000 per page) and polls Omnisend every 2 seconds until batches finish. It is subject to the function timeout,
-  so it can stop before finishing on large stores.
+- **Keep the sync page open** – the sync runs in the browser page by page; closing the page stops it. Use
+  **Resume from page N** to continue where it stopped.
+- **Omnisend processes batches asynchronously** – a page counts as sent once Omnisend accepts the batch; Omnisend may
+  still reject individual records later. Check batch results in Omnisend.
+- **Full sync without `entity` runs in one request** – it pages through all accounts (100 per page), products and
+  orders (1000 per page) and polls Omnisend every 2 seconds until batches finish. It is subject to the function
+  timeout, so it can stop before finishing on large stores. Use the sync page or the page-by-page route instead.
 - **Email consent is set once** – the opt-in is sent when the contact is created (or synced). Later opt-in changes
   on the account are not sent to Omnisend, because contact updates do not include the email channel status.
 - **Contact updates** need `omnisend_email` on the account. Accounts created before the app was installed are updated
@@ -140,9 +165,12 @@ functions/
   cart-events.ts      # cart.created / updated / deleted → carts
   order-events.ts     # order.submitted / updated → orders
   product-events.ts   # product.created / updated / deleted, product.variant.updated → products
-  sync.ts             # POST route: full initial sync
+  sync.ts             # POST route: one page of an entity, or the full initial sync
   validate-login.ts   # POST route: API key check
-  lib/                # Omnisend client, payload builders, localization, batch polling
+  lib/                # Omnisend client, payload builders, localization, page sync, batch polling
+frontend/             # initial sync page (React) and app Worker, hosted by Swell
+models/syncs.json     # placeholder collection for the sidebar entry
+content/syncs.json    # "Omnisend sync" sidebar entry opening the frontend
 settings/omnisend.json
 assets/icon.png       # app icon (Omnisend mark)
 assets/screenshots/   # listing screenshots (referenced by `images` in swell.json)
@@ -153,7 +181,7 @@ test/integration/     # vitest tests against the store using CLI auth
 ### Commands
 
 ```bash
-npm run typecheck   # TypeScript check for functions and tests
+npm run typecheck   # TypeScript check for functions, tests and the frontend
 npm test            # run all vitest tests
 swell app dev       # run functions locally, triggered by the test environment
 swell app push      # deploy to the test environment

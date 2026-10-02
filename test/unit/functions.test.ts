@@ -194,6 +194,44 @@ describe("sync route", () => {
       "GET orders",
     ]);
   });
+
+  it("syncs one page of an entity when entity is given", async () => {
+    const fetchMock = mockOmnisend();
+    const swell = mockSwell({ "/products": () => ({ count: 101, results: [makeProduct()] }) });
+
+    const res = await syncFn.post(createMockRequest({
+      swell,
+      data: { entity: "products", page: 2, limit: 100, created_after: "2026-09-01" },
+    }));
+
+    expect(res).toEqual({ entity: "products", page: 2, limit: 100, count: 101, synced: 1, done: true });
+    expect(swell.get.mock.calls[0][1]).toMatchObject({
+      page: 2,
+      limit: 100,
+      date_created: { $gte: "2026-09-01T00:00:00.000Z" },
+    });
+    expect(calls(fetchMock).map((c) => c.body?.endpoint)).toEqual(["products"]);
+  });
+
+  it.each([
+    [{ entity: "carts" }, "Invalid entity, use one of contacts, products, orders"],
+    [{ entity: "orders", limit: 50 }, "Invalid page size, use one of 10, 100, 200, 500, 1000"],
+    [{ entity: "orders", created_after: "yesterday" }, "Invalid created_after date"],
+  ])("rejects invalid page sync request %j", async (data, message) => {
+    const fetchMock = mockOmnisend();
+    await expect(syncFn.post(createMockRequest({ swell: mockSwell(), data }))).rejects.toMatchObject({ message, status: 400 });
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    [400, 400],
+    [503, 502],
+  ])("maps Omnisend %i errors on a page sync to %i", async (omnisendStatus, status) => {
+    mockOmnisend({ "POST /batches": { status: omnisendStatus } });
+    const swell = mockSwell({ "/orders": () => ({ count: 1, results: [makeOrder()] }) });
+
+    await expect(syncFn.post(createMockRequest({ swell, data: { entity: "orders" } }))).rejects.toMatchObject({ status });
+  });
 });
 
 describe("validate-login route", () => {

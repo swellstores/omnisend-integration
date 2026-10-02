@@ -1,12 +1,12 @@
-import { OmnisendSettings } from './omnisend-client';
+import type { OmnisendSettings, SwellClient } from './omnisend-client';
 
-export async function getDefaultLocale(swell: SwellRequest['swell']): Promise<string | undefined> {
+export async function getDefaultLocale(swell: SwellClient): Promise<string | undefined> {
   const storeSettings = await swell.get('/settings/store') as any;
   return storeSettings?.locale;
 }
 
 export async function getLocalizedRecord(
-  swell: SwellRequest['swell'],
+  swell: SwellClient,
   settings: OmnisendSettings,
   path: string,
   params: Record<string, any>,
@@ -25,7 +25,7 @@ export async function getLocalizedRecord(
 }
 
 export async function getLocalizedResults(
-  swell: SwellRequest['swell'],
+  swell: SwellClient,
   settings: OmnisendSettings,
   defaultLocale: string | undefined,
   path: string,

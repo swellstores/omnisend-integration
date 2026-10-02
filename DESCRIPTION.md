@@ -21,8 +21,8 @@ Sync customers, products, carts and orders with Omnisend for email and SMS marke
 
    Amounts are sent in cents, and product links are built from your store URL. Orders and carts can optionally be sent in the customer's display language.
 
-3. **Imports existing data.** The initial sync sends all existing contacts, products and orders to Omnisend in batches, so Omnisend knows about records created before the app was installed.
+3. **Imports existing data.** The **Omnisend sync** page in the dashboard sends existing contacts, products and orders to Omnisend in batches, so Omnisend knows about records created before the app was installed. Sync everything or only records created since a date, choose the page size, and start, stop or resume each entity separately.
 
 ## Setup
 
-Enter your Omnisend API key and store URL in the app settings and turn on Enable Integration. Run the initial sync once (`POST /functions/omnisend/sync`). Disable the native Omnisend integration to avoid sending events twice.
+Enter your Omnisend API key and store URL in the app settings and turn on Enable Integration. Open **Omnisend sync** in the sidebar and sync contacts, products, then orders. Disable the native Omnisend integration to avoid sending events twice.
