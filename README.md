@@ -71,6 +71,8 @@ know yet.
   Contacts pages also store `omnisend_email` on the accounts in a single Swell batch request.
 - The Worker only accepts same-origin JSON requests from a validated staff session of the store.
 
+![Omnisend sync in the dashboard sidebar](assets/screenshots/02-sidebar-entry.png)
+
 ### Sync route
 
 `POST /functions/omnisend/sync` (`functions/sync.ts`):
@@ -93,7 +95,9 @@ fetched in that locale before they are sent, so product names and other localize
 
 ## Settings
 
-Configured in the app settings (`settings/omnisend.json`). Credentials are never stored in code.
+Configured in the app settings (`settings/omnisend.json`), under **Apps → Omnisend → Settings**. Credentials are never stored in code.
+
+![App settings](assets/screenshots/01-settings.png)
 
 | Setting              | Type   | Required | Default | Description                                                                 |
 | -------------------- | ------ | -------- | ------- | --------------------------------------------------------------------------- |
@@ -173,7 +177,9 @@ models/syncs.json     # placeholder collection for the sidebar entry
 content/syncs.json    # "Omnisend sync" sidebar entry opening the frontend
 settings/omnisend.json
 assets/icon.png       # app icon (Omnisend mark)
-assets/screenshots/   # listing screenshots (referenced by `images` in swell.json)
+assets/image.png      # social card (1200×630)
+assets/images/        # App Store listing images, listed in swell.json "images"
+assets/screenshots/   # dashboard screenshots used in this README
 test/unit/            # vitest unit tests (Omnisend API mocked)
 test/integration/     # vitest tests against the store using CLI auth
 ```

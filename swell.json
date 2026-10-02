@@ -11,28 +11,28 @@
 	],
 	"images": [
 		{
-			"id": "1-settings",
-			"title": "Settings",
-			"description": "Sync customers, products, orders, and carts with Omnisend for email and SMS marketing automation",
-			"image_src": "assets/screenshots/1-settings.png"
+			"id": "initial-sync",
+			"title": "Your store, ready in Omnisend",
+			"description": "Send existing contacts, products and orders from Omnisend sync in your sidebar and follow the progress of each.",
+			"image_src": "assets/images/1-initial-sync.png"
 		},
 		{
-			"id": "2-configurations",
-			"title": "App configurations",
-			"description": "Sync customer accounts, products, carts and orders to Omnisend, with a full initial sync",
-			"image_src": "assets/screenshots/2-configurations.png"
+			"id": "realtime-sync",
+			"title": "Store changes sync on their own",
+			"description": "New customers, carts, orders and product changes reach Omnisend as they happen. Customers who opt in to email are subscribed.",
+			"image_src": "assets/images/2-realtime-sync.png"
 		},
 		{
-			"id": "3-realtime-sync",
-			"title": "Real-time sync",
-			"description": "Customer, cart, order and product changes are sent to Omnisend as they happen",
-			"image_src": "assets/screenshots/3-realtime-sync.png"
+			"id": "sync-options",
+			"title": "Sync everything or just what’s new",
+			"description": "Sync all records or only those created since a date, choose the page size, and stop or resume each sync from the next page.",
+			"image_src": "assets/images/3-sync-options.png"
 		},
 		{
-			"id": "4-initial-sync",
-			"title": "Initial sync",
-			"description": "Send existing contacts, products and orders to Omnisend in batches",
-			"image_src": "assets/screenshots/4-initial-sync.png"
+			"id": "setup",
+			"title": "Connected in a few minutes",
+			"description": "Paste your Omnisend API key and store URL, then turn on Enable Integration to start syncing.",
+			"image_src": "assets/images/4-setup.png"
 		}
 	],
 	"frontend": {
