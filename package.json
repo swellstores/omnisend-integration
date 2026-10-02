@@ -1,5 +1,5 @@
 {
-  "description": "Omnisend email and SMS marketing integration",
+  "description": "Sync customers, carts, orders and products to Omnisend",
   "dependencies": {
     "currency.js": "^2.0.4"
   },

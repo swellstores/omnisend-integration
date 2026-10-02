@@ -1,28 +1,14 @@
-# Omnisend
+Keep Omnisend up to date with your Swell store. Customers, carts, orders and products are sent to Omnisend as they change, so Omnisend automations, like abandoned cart emails and order follow-ups, run on your store's data.
 
-Sync customers, products, carts and orders with Omnisend for email and SMS marketing automation.
+Connect your Omnisend account with an API key and your store URL, then send your existing contacts, products and orders from the Omnisend sync page in your dashboard. From then on, changes in your store reach Omnisend on their own.
 
-## How it works
+- **Contacts.** New customers are added to Omnisend with their name and address. Customers who accept email marketing are subscribed to email, and the others are added as not subscribed.
+- **Carts.** Carts linked to a customer are sent with their items, total and a link back to checkout, ready for Omnisend's abandoned cart automation.
+- **Orders.** Orders are sent with their items, totals, addresses and shipping method, and their payment and fulfillment status stays up to date, including refunds and cancellations.
+- **Products.** Products are sent with their description, tags, image, stock status and variants with prices, and removed from Omnisend when you delete them.
+- **Your existing data.** The Omnisend sync page sends contacts, products and orders in batches: all of them, or only those created since a date. Follow the progress of each, and stop or resume at any time.
+- **Your customers' language.** Optionally, carts and orders are sent in the language the customer shopped in.
 
-1. **Syncs store changes in real time.** When the integration is enabled, store events are sent to Omnisend:
+**Replaces the built-in integration.** The app syncs the same records as Swell's built-in Omnisend integration. If the built-in integration is on when you install the app, Swell offers to turn it off so nothing is sent twice.
 
-   | Store event                                                                         | Omnisend                    |
-   | ----------------------------------------------------------------------------------- | --------------------------- |
-   | `account.created`, `account.updated`                                                | Contact created / updated   |
-   | `cart.created`, `cart.updated`, `cart.deleted`                                      | Cart created / updated / deleted |
-   | `order.submitted`, `order.updated`                                                  | Order created / updated     |
-   | `product.created`, `product.updated`, `product.variant.updated`, `product.deleted`  | Product created / updated / deleted |
-
-2. **Sends complete records.**
-   - **Contacts** – name, address and phone. Email status is subscribed when the customer opted in to email marketing, otherwise not subscribed.
-   - **Carts** – items, total and checkout recovery link. Only carts linked to a customer account are sent.
-   - **Orders** – items, totals, addresses, shipping, payment and fulfillment status, and cancel date.
-   - **Products** – description, tags, stock status, image and variants with sale and option prices.
-
-   Amounts are sent in cents, and product links are built from your store URL. Orders and carts can optionally be sent in the customer's display language.
-
-3. **Imports existing data.** The **Omnisend sync** page in the dashboard sends existing contacts, products and orders to Omnisend in batches, so Omnisend knows about records created before the app was installed. Sync everything or only records created since a date, choose the page size, and start, stop or resume each entity separately.
-
-## Setup
-
-Enter your Omnisend API key and store URL in the app settings and turn on Enable Integration. Open **Omnisend sync** in the sidebar and sync contacts, products, then orders. Disable the native Omnisend integration to avoid sending events twice.
+Setup takes a few minutes. In Omnisend, go to Store settings → API keys and create a key. Paste it and your store URL in the app settings and turn on Enable Integration. Then open Omnisend sync in your dashboard menu and sync contacts, products and then orders.

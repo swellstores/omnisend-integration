@@ -101,7 +101,7 @@ Configured in the app settings (`settings/omnisend.json`), under **Apps → Omni
 
 | Setting              | Type   | Required | Default | Description                                                                 |
 | -------------------- | ------ | -------- | ------- | --------------------------------------------------------------------------- |
-| `api_key`            | text   | yes      |         | Omnisend API key (Omnisend → Profile → Integrations & API → API Keys).      |
+| `api_key`            | text   | yes      |         | Omnisend API key (Omnisend → Store settings → API keys).      |
 | `store_url`          | text   | yes      |         | Storefront URL starting with `https://`, used for product and item links.  |
 | `enabled`            | toggle | no       | off     | Turns real-time sync on. The sync route also requires it.                   |
 | `use_display_locale` | toggle | no       | off     | Fetch orders and carts in their display locale before sending.             |
