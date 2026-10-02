@@ -26,8 +26,8 @@ All data is sent to the [Omnisend API v3](https://api-docs.omnisend.com/) (`http
 Events are processed only when **Enable Integration** is on and an API key is set.
 
 **Contacts** – name, shipping address, city, state, country and postal code, plus custom properties
-`company`, `shipping_phone`, `account_phone` and `email`. New contacts are created with the email channel status
-`subscribed` (dated with the account creation date). After a contact is created, the app stores its email on the account
+`company`, `shipping_phone`, `account_phone` and `email`. The email channel status follows the account's marketing
+opt-in: `subscribed` when `email_optin` is true, otherwise `nonSubscribed` (dated with the account creation date). After a contact is created, the app stores its email on the account
 in `omnisend_email` and uses it to find the contact on later updates.
 
 **Carts** – cart total, currency, checkout ID, recovery URL (`checkout_url`), language and items
@@ -122,7 +122,8 @@ Configured in the app settings (`settings/omnisend.json`). Credentials are never
 - **Initial sync runs in one request** – it pages through all accounts (100 per page), products and orders
   (1000 per page) and polls Omnisend every 2 seconds until batches finish. It is subject to the function timeout,
   so it can stop before finishing on large stores.
-- **Email consent** – every new contact is sent with email status `subscribed`, regardless of the customer's opt-in.
+- **Email consent is set once** – the opt-in is sent when the contact is created (or synced). Later opt-in changes
+  on the account are not sent to Omnisend, because contact updates do not include the email channel status.
 - **Contact updates** need `omnisend_email` on the account. Accounts created before the app was installed are updated
   only after the initial sync.
 - **Guest carts** are not sent.
@@ -143,7 +144,7 @@ functions/
   validate-login.ts   # POST route: API key check
   lib/                # Omnisend client, payload builders, localization, batch polling
 settings/omnisend.json
-assets/icon.png       # app icon (placeholder)
+assets/icon.png       # app icon (Omnisend mark)
 assets/screenshots/   # listing screenshots (referenced by `images` in swell.json)
 test/unit/            # vitest unit tests (Omnisend API mocked)
 test/integration/     # vitest tests against the store using CLI auth

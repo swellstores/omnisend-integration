@@ -32,6 +32,7 @@ export default async function (req: SwellRequest) {
       const cartId = (body as any)?.$event?.data?.id;
       if (!cartId) {
         console.error(`Omnisend cartDelete error: no cart ID`);
+        break;
       }
       await cartDelete(client, cartId);
       break;

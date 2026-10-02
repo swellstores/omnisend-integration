@@ -16,7 +16,7 @@ export async function getLocalizedRecord(
     return record;
   }
 
-  const defaultLocale = getDefaultLocale(swell);
+  const defaultLocale = await getDefaultLocale(swell);
   if (record.display_locale === defaultLocale) {
     return record;
   }

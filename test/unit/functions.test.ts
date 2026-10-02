@@ -96,6 +96,12 @@ describe("cart-events", () => {
     expect(routes(fetchMock)).toEqual(["GET /carts/rec_1", "PUT /carts/rec_1"]);
   });
 
+  it("skips cart.deleted without a cart ID", async () => {
+    const fetchMock = mockOmnisend();
+    await cartEvents(createMockRequest({ swell: mockSwell(), data: { $event: { type: "cart.deleted" } } }));
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
   it("deletes the cart by the event record ID on cart.deleted", async () => {
     const fetchMock = mockOmnisend({ "DELETE /carts/rec_1": { status: 204 } });
     await cartEvents(eventRequest(mockSwell(), "cart.deleted"));
@@ -135,6 +141,12 @@ describe("product-events", () => {
     await productEvents(eventRequest(swell(), "product.updated"));
     await productEvents(eventRequest(swell(), "product.variant.updated", { id: "var_1" }));
     expect(routes(fetchMock)).toEqual(["PUT /products/rec_1", "PUT /products/rec_1"]);
+  });
+
+  it("skips product.deleted without a product ID", async () => {
+    const fetchMock = mockOmnisend();
+    await productEvents(createMockRequest({ swell: mockSwell(), data: { $event: { type: "product.deleted" } } }));
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 
   it("deletes the product on product.deleted", async () => {

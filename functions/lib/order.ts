@@ -67,7 +67,7 @@ function buildOrderBody(order: any, storeUrl: string): object {
     shippingAddress: order.shipping
       ? {
           firstName: order.shipping.first_name,
-          last_name: order.shipping.last_name,
+          lastName: order.shipping.last_name,
           company: order.shipping.company,
           address: order.shipping.address1,
           address2: order.shipping.address2,
@@ -81,7 +81,7 @@ function buildOrderBody(order: any, storeUrl: string): object {
     billingAddress: order.billing
       ? {
           firstName: order.billing.first_name,
-          last_name: order.billing.last_name,
+          lastName: order.billing.last_name,
           company: order.billing.company,
           address: order.billing.address1,
           address2: order.billing.address2,

@@ -55,10 +55,12 @@ describe("createOrder", () => {
       courierTitle: "UPS",
       paymentStatus: "paid",
       fulfillmentStatus: "fulfilled",
-      shippingAddress: { firstName: "Jane", city: "NYC", countryCode: "US" },
-      billingAddress: { firstName: "Jane", city: "NYC", countryCode: "US" },
+      shippingAddress: { firstName: "Jane", lastName: "Doe", city: "NYC", countryCode: "US" },
+      billingAddress: { firstName: "Jane", lastName: "Doe", city: "NYC", countryCode: "US" },
     });
     expect(call.body.products[0]).toMatchObject({ productID: "prod_1", price: 1050, quantity: 2 });
+    expect(call.body.shippingAddress.last_name).toBeUndefined();
+    expect(call.body.billingAddress.last_name).toBeUndefined();
   });
 
   it("uses null order number when it has no digits", async () => {

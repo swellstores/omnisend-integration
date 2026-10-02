@@ -35,6 +35,7 @@ export default async function (req: SwellRequest) {
       const productId = (body as any)?.$event?.data?.id;
       if (!productId) {
         console.error(`Omnisend deleteProduct error: no product ID`);
+        break;
       }
       await deleteProduct(client, productId);
       break;

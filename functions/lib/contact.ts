@@ -33,7 +33,8 @@ function buildIdentifiers(account: any): Array<object> {
       id: account.email,
       channels: {
         email: {
-          status: 'subscribed',
+          // respect the customer's marketing opt-in
+          status: account.email_optin === true ? 'subscribed' : 'nonSubscribed',
           statusDate: account.date_created,
         },
       },

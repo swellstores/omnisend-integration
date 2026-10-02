@@ -31,6 +31,17 @@ describe("getLocalizedRecord", () => {
     expect(swell.get).toHaveBeenCalledTimes(1);
   });
 
+  it("does not refetch a record already in the store default locale", async () => {
+    const swell = mockSwell({
+      "/settings/store": { locale: "en" },
+      "/orders/{id}": { id: "o1", display_locale: "en" },
+    });
+
+    await getLocalizedRecord(swell, localized, "/orders/{id}", { id: "o1" });
+
+    expect(swell.get.mock.calls.map((c: any[]) => c[0])).toEqual(["/orders/{id}", "/settings/store"]);
+  });
+
   it("refetches the record in a non-default display locale", async () => {
     const swell = mockSwell({
       "/settings/store": { locale: "en" },

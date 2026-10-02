@@ -29,7 +29,7 @@ describe("createContact", () => {
     const fetchMock = mockOmnisend();
     const swell = mockSwell();
 
-    await createContact(swell, client(), "acc_1", makeAccount());
+    await createContact(swell, client(), "acc_1", makeAccount({ email_optin: true }));
 
     const [call] = calls(fetchMock);
     expect(call).toMatchObject({ method: "POST", path: "/contacts" });
@@ -61,6 +61,15 @@ describe("createContact", () => {
       id: "acc_1",
       omnisend_email: "jane@example.com",
     });
+  });
+
+  it.each([
+    [false, "nonSubscribed"],
+    [undefined, "nonSubscribed"],
+  ])("sends email status nonSubscribed when email_optin is %s", async (optin, status) => {
+    const fetchMock = mockOmnisend();
+    await createContact(mockSwell(), client(), "acc_1", makeAccount({ email_optin: optin }));
+    expect(calls(fetchMock)[0].body.identifiers[0].channels.email.status).toBe(status);
   });
 
   it("omits address on create when the account has none", async () => {
@@ -124,6 +133,7 @@ describe("syncContacts", () => {
     expect(batches).toHaveLength(2);
     expect(batches[0]).toMatchObject({ method: "POST", path: "/batches", body: { method: "POST", endpoint: "contacts" } });
     expect(batches[0].body.items.map((i: any) => i.id)).toEqual(["acc_1", "acc_2"]);
+    expect(batches[0].body.items[0].identifiers[0].channels.email.status).toBe("nonSubscribed");
     expect(swell.get).toHaveBeenCalledWith("/accounts", { limit: 100, page: 1 });
     // accounts without email are not tagged
     expect(swell.put.mock.calls.map((c: any[]) => c[1].id)).toEqual(["acc_1", "acc_3"]);

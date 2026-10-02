@@ -128,8 +128,8 @@ export function makeOrder(overrides: Record<string, any> = {}) {
     item_quantity_returned: 0,
     item_quantity_deliverable: 0,
     delivery: "shipment",
-    shipping: { service_name: "UPS", first_name: "Jane", city: "NYC", country: "US" },
-    billing: { first_name: "Jane", city: "NYC", country: "US" },
+    shipping: { service_name: "UPS", first_name: "Jane", last_name: "Doe", city: "NYC", country: "US" },
+    billing: { first_name: "Jane", last_name: "Doe", city: "NYC", country: "US" },
     items: [makeItem()],
     ...overrides,
   };
