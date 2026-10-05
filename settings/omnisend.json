@@ -6,7 +6,7 @@
     {
       "id": "api_key",
       "label": "API Key",
-      "type": "short_text",
+      "type": "secret",
       "description": "In Omnisend, go to Store settings → API keys and create a key with access to Contacts, Products, Carts and Orders",
       "required": true
     },
