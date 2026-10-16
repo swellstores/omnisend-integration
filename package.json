@@ -7,7 +7,7 @@
     "@cloudflare/vitest-pool-workers": "0.12.x",
     "@swell/app-types": "^1.2.6",
     "typescript": "^5.9.3",
-    "vitest": "3.2.x"
+    "vitest": "5.0.x"
   },
   "name": "omnisend",
   "private": true,
