@@ -2,6 +2,15 @@
   "$schema": "https://json.swell.store/setting.json",
   "label": "Omnisend",
   "description": "Sync customers, products, orders, and carts with Omnisend for email and SMS marketing automation",
+  "actions": [
+    {
+      "id": "test_connection",
+      "label": "Test connection",
+      "function": "test-connection",
+      "loading_label": "Testing…",
+      "hint": "Checks the API key with Omnisend"
+    }
+  ],
   "fields": [
     {
       "id": "api_key",
