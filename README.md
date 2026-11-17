@@ -206,4 +206,4 @@ Contributions are welcome! Visit the [Swell Discord](https://discord.gg/VakSbyjD
 
 ## License
 
-This project is licensed under the MIT License - see [LICENSE.md](LICENSE.md) file for details.
+Swell App License. See [LICENSE](LICENSE).
