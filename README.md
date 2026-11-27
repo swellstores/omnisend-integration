@@ -206,4 +206,4 @@ Contributions are welcome! Visit the [Swell Discord](https://discord.gg/VakSbyjD
 
 ## License
 
-Swell App License. See [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE).

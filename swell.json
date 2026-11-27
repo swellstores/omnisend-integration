@@ -1,5 +1,6 @@
 {
 	"description": "Sync customers, carts, orders and products to Omnisend",
+	"repository_url": "https://github.com/swellstores/omnisend-integration",
 	"id": "omnisend",
 	"name": "Omnisend",
 	"type": "integration",
